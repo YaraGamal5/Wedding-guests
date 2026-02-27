@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 type Guest = {
   id: string;
@@ -37,21 +35,9 @@ export default function Home() {
     }
   };
 
-  const router = useRouter();
-
   useEffect(() => {
-    const init = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        router.push("/login");
-        return;
-      }
-      await fetchGuests();
-    };
-    init();
-  }, [router]);
+    fetchGuests();
+  }, []);
 
   // Add new guest
   const addGuest = async () => {
@@ -210,24 +196,13 @@ export default function Home() {
     <div className="p-10 max-w-4xl mx-auto bg-white rounded-xl shadow-lg mt-10">
       <header className="flex justify-between items-center mb-8 border-b pb-4">
         <h1 className="text-3xl font-bold text-gray-800">Wedding List Manager</h1>
-        <div className="flex gap-2">
-          <button
-            onClick={downloadCSV}
-            id="download-btn"
-            className="bg-green-500 text-white px-4 py-2 rounded-lg"
-          >
-            ⬇ Save to Computer (Excel)
-          </button>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-              router.push("/login");
-            }}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg"
-          >
-            Sign Out
-          </button>
-        </div>
+        <button
+          onClick={downloadCSV}
+          id="download-btn"
+          className="bg-green-500 text-white px-4 py-2 rounded-lg"
+        >
+          ⬇ Save to Computer (Excel)
+        </button>
       </header>
 
       {/* Error Message */}
