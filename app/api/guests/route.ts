@@ -8,7 +8,10 @@ const supabaseAdmin = createClient(
 
 export async function GET(request: NextRequest) {
   try {
-    const { data, error } = await supabaseAdmin.from("guests").select("*");
+    const { data, error } = await supabaseAdmin
+      .from("guests")
+      .select("*")
+      .order("created_at", { ascending: true });
     if (error) {
       console.error("Fetch error:", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
