@@ -211,20 +211,18 @@ export default function Home() {
           {error}
         </div>
       )}
-      <div className="flex justify-center mb-8">
-        <div className="grid grid-cols-4 gap-4 stats-grid">
-          <div className="stat-card">
-            <span id="total-stat">{total}</span>
-            <label>Total People</label>
-          </div>
-          <div className="stat-card">
-            <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
-            <label>Invited</label>
-          </div>
-          <div className="stat-card">
-            <span id="attending-stat">{coming}</span>
-            <label>Confirmed</label>
-          </div>
+      <div className="grid grid-cols-4 gap-4 mb-8 stats-grid max-w-2xl mx-auto">
+        <div className="stat-card">
+          <span id="total-stat">{total}</span>
+          <label>Total People</label>
+        </div>
+        <div className="stat-card">
+          <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
+          <label>Invited</label>
+        </div>
+        <div className="stat-card">
+          <span id="attending-stat">{coming}</span>
+          <label>Confirmed</label>
         </div>
       </div>
 
@@ -361,27 +359,34 @@ export default function Home() {
           cursor: pointer;
         }
 
-        /* Stat cards */
+        /* Stat cards (centered above table) */
         .stat-card {
-          background: #e8f0ff;
+          background: #f4cabc;
           padding: 15px;
           border-radius: 10px;
           text-align: center;
-          border: 1px solid #bfdcff;
+          border: 1px solid #ffe4e1;
         }
         .stat-card span {
           display: block;
           font-size: 1.5rem;
           font-weight: 700;
-          color: #000; /* numbers black */
+          color: #000;
         }
         .stats-grid label {
           display: block;
           font-size: 0.75rem;
-          color: #000; /* header labels black */
+          color: #000;
           font-weight: 600;
           text-transform: uppercase;
         }
+        /* overall page background maybe light */
+        body { background: #ffe4e1; }
+        /* header gradient adjust to fit new palette */
+        header { background: #f4cabc; color: #000; }
+        #add-btn { background: #f4cabc; }
+        #download-btn { background: #ffe4e1; color: #000; }
+      `}]}{
 
         /* Table headers and cells */
         th {
