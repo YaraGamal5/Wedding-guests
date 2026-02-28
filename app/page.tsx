@@ -413,7 +413,7 @@ export default function Home() {
         table td, table th { font-size: 0.875rem; }
 
         .controls input, .controls select { min-width: 150px; }
-      `}]}{
+      `}</style>
     </div>
   );
 }
