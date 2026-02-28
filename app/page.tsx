@@ -211,20 +211,21 @@ export default function Home() {
           {error}
         </div>
       )}
-      <div className="grid grid-cols-4 gap-4 mb-8 stats-grid">
-        <div className="stat-card">
-          <span id="total-stat">{total}</span>
-          <label>Total People</label>
+      <div className="flex justify-center mb-8">
+        <div className="grid grid-cols-4 gap-4 stats-grid">
+          <div className="stat-card">
+            <span id="total-stat">{total}</span>
+            <label>Total People</label>
+          </div>
+          <div className="stat-card">
+            <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
+            <label>Invited</label>
+          </div>
+          <div className="stat-card">
+            <span id="attending-stat">{coming}</span>
+            <label>Confirmed</label>
+          </div>
         </div>
-        <div className="stat-card">
-          <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
-          <label>Invited</label>
-        </div>
-        <div className="stat-card">
-          <span id="attending-stat">{coming}</span>
-          <label>Confirmed</label>
-        </div>
-        
       </div>
 
       {/* Add Guest */}
