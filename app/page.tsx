@@ -194,12 +194,12 @@ export default function Home() {
 
   return (
     <div className="p-10 max-w-4xl mx-auto bg-white rounded-xl shadow-lg mt-10">
-      <header className="flex justify-between items-center mb-8 border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-800">Wedding List Manager</h1>
+      <header className="flex justify-between items-center mb-8 rounded-t-xl bg-gradient-to-r from-purple-600 to-purple-400 text-white p-6">
+        <h1 className="text-3xl font-bold">Wedding List Manager</h1>
         <button
           onClick={downloadCSV}
           id="download-btn"
-          className="bg-green-500 text-white px-4 py-2 rounded-lg"
+          className="bg-white text-purple-600 font-bold px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition"
         >
           ⬇ Save to Computer (Excel)
         </button>
@@ -228,18 +228,18 @@ export default function Home() {
       </div>
 
       {/* Add Guest */}
-      <div className="controls flex gap-2 mb-6">
+      <div className="controls flex flex-wrap gap-2 mb-6">
         <input
           type="text"
           placeholder="Guest Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border p-2 flex-1"
+          className="border border-gray-300 rounded p-2 flex-1 focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
         <select
           value={side}
           onChange={(e) => setSide(e.target.value as "bride" | "groom")}
-          className="border p-2"
+          className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
         >
           <option value="bride">Bride</option>
           <option value="groom">Groom</option>
@@ -247,7 +247,7 @@ export default function Home() {
         <button
           id="add-btn"
           onClick={addGuest}
-          className="bg-purple-600 text-white rounded-lg px-4 py-2"
+          className="bg-purple-600 text-white rounded-lg px-4 py-2 hover:bg-purple-700 transition"
         >
           Add Guest
         </button>
@@ -257,19 +257,19 @@ export default function Home() {
       {guests.length === 0 ? (
         <p className="text-center text-gray-600">No guests yet.</p>
       ) : (
-        <table className="w-full border-collapse">
-          <thead>
+        <table className="w-full table-auto border-collapse">
+          <thead className="bg-gray-100">
             <tr>
-              <th className="border px-2 py-1">Click Name to Edit</th>
-              <th className="border px-2 py-1">Side</th>
-              <th className="border px-2 py-1">Status</th>
-              <th className="border px-2 py-1">RSVP</th>
+              <th className="border px-2 py-1 text-left">Click Name to Edit</th>
+              <th className="border px-2 py-1 text-left">Side</th>
+              <th className="border px-2 py-1 text-left">Status</th>
+              <th className="border px-2 py-1 text-left">RSVP</th>
               <th className="border px-2 py-1">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
             {guests.map((g) => (
-              <tr key={g.id}>
+              <tr key={g.id} className="hover:bg-gray-50">
                 <td className="border px-2 py-1">
                   <input
                     type="text"
@@ -304,7 +304,7 @@ export default function Home() {
                     {normalizeStatus(g.rsvp_status) === 'coming' ? 'Confirmed' : 'Waiting'}
                   </button>
                 </td>
-                <td className="border px-2 py-1">
+                <td className="border px-2 py-1 text-center">
                   <button className="remove-btn" onClick={() => removeGuest(g.id)}>
                     ✕
                   </button>
@@ -399,7 +399,14 @@ export default function Home() {
 
         #add-btn { background: #7c3aed; color: #ffffff; }
         #download-btn { background: #10b981; color: #ffffff; }
-      `}</style>
+
+        /* more polished overrides */
+        header h1 { letter-spacing: 0.05em; }
+        table th { background: #f3f4f6; }
+        table td, table th { font-size: 0.875rem; }
+
+        .controls input, .controls select { min-width: 150px; }
+      `}]}{
     </div>
   );
 }
