@@ -194,7 +194,7 @@ export default function Home() {
 
   return (
     <div className="p-10 max-w-4xl mx-auto bg-white rounded-xl shadow-lg mt-10">
-      <header className="flex justify-between items-center mb-8 rounded-t-xl bg-gradient-to-r from-purple-600 to-purple-400 text-white p-6">
+      <header className="flex justify-between items-center mb-8 rounded-t-xl bg-gradient-to-r from-green-300 to-blue-200 text-gray-800 p-6">
         <h1 className="text-3xl font-bold">Wedding List Manager</h1>
         <button
           onClick={downloadCSV}
@@ -211,18 +211,24 @@ export default function Home() {
           {error}
         </div>
       )}
-      <div className="grid grid-cols-4 gap-4 mb-8 stats-grid max-w-2xl mx-auto">
-        <div className="stat-card">
-          <span id="total-stat">{total}</span>
-          <label>Total People</label>
-        </div>
-        <div className="stat-card">
-          <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
-          <label>Invited</label>
-        </div>
-        <div className="stat-card">
-          <span id="attending-stat">{coming}</span>
-          <label>Confirmed</label>
+      <div className="flex justify-center mb-8">
+        <div className="grid grid-cols-4 gap-4 stats-grid">
+          <div className="stat-card">
+            <span id="total-stat">{total}</span>
+            <label>Total People</label>
+          </div>
+          <div className="stat-card">
+            <span id="invited-stat">{guests.filter((g) => g.invited).length}</span>
+            <label>Invited</label>
+          </div>
+          <div className="stat-card">
+            <span id="attending-stat">{coming}</span>
+            <label>Confirmed</label>
+          </div>
+          <div className="stat-card">
+            <span id="pending-stat">{pending}</span>
+            <label>Pending</label>
+          </div>
         </div>
       </div>
 
@@ -359,34 +365,27 @@ export default function Home() {
           cursor: pointer;
         }
 
-        /* Stat cards (centered above table) */
+        /* Stat cards */
         .stat-card {
-          background: #f4cabc;
+          background: #f4f7f9; /* very light gray-blue */
           padding: 15px;
           border-radius: 10px;
           text-align: center;
-          border: 1px solid #ffe4e1;
+          border: 1px solid #d1dfe6;
         }
         .stat-card span {
           display: block;
           font-size: 1.5rem;
           font-weight: 700;
-          color: #000;
+          color: #1f2937; /* dark gray for numbers */
         }
         .stats-grid label {
           display: block;
           font-size: 0.75rem;
-          color: #000;
+          color: #4b5563; /* muted gray */
           font-weight: 600;
           text-transform: uppercase;
         }
-        /* overall page background maybe light */
-        body { background: #ffe4e1; }
-        /* header gradient adjust to fit new palette */
-        header { background: #f4cabc; color: #000; }
-        #add-btn { background: #f4cabc; }
-        #download-btn { background: #ffe4e1; color: #000; }
-      `}]}{
 
         /* Table headers and cells */
         th {
@@ -403,8 +402,10 @@ export default function Home() {
           color: #000; /* ensure dropdown and inputs show black text */
         }
 
-        #add-btn { background: #7c3aed; color: #ffffff; }
-        #download-btn { background: #10b981; color: #ffffff; }
+        #add-btn { background: #6b7280; color: #ffffff; }
+        #add-btn:hover { background: #4b5563; }
+        #download-btn { background: #3b82f6; color: #ffffff; }
+        #download-btn:hover { background: #2563eb; }
 
         /* more polished overrides */
         header h1 { letter-spacing: 0.05em; }
