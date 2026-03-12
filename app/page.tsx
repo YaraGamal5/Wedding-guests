@@ -17,7 +17,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [side, setSide] = useState<"bride" | "groom">("bride");
   const [error, setError] = useState<string>("");
-
+const [sideFilter, setSideFilter] = useState<"all" | "bride" | "groom">("all");
   // Fetch guests via server API (uses service role, bypasses RLS)
   const fetchGuests = async () => {
     try {
@@ -191,10 +191,16 @@ export default function Home() {
   const pending = guests.filter(
     (g) => normalizeStatus(g.rsvp_status) === "pending"
   ).length;
-
+const filteredGuests =
+  sideFilter === "all"
+    ? guests
+    : guests.filter(
+        (g) => g.side?.toLowerCase().trim() === sideFilter
+      );
   return (
-    <div className="p-10 max-w-4xl mx-auto bg-white rounded-xl shadow-lg mt-10">
-      <header className="flex justify-between items-center mb-8 rounded-t-xl bg-gradient-to-r from-green-300 to-blue-200 text-gray-800 p-6">
+<div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8">
+  <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+          <header className="flex justify-between items-center mb-8 rounded-t-xl bg-gradient-to-r from-green-300 to-blue-200 text-gray-800 p-6">
         <h1 className="text-3xl font-bold">Wedding List Manager</h1>
         <button
           onClick={downloadCSV}
@@ -212,8 +218,8 @@ export default function Home() {
         </div>
       )}
       <div className="flex justify-center mb-8">
-        <div className="grid grid-cols-4 gap-4 stats-grid">
-          <div className="stat-card">
+<div className="grid grid-cols-2 md:grid-cols-4 gap-5 stats-grid">
+            <div className="stat-card">
             <span id="total-stat">{total}</span>
             <label>Total People</label>
           </div>
@@ -233,14 +239,14 @@ export default function Home() {
       </div>
 
       {/* Add Guest */}
-      <div className="controls flex flex-wrap gap-2 mb-6">
-        <input
-          type="text"
-          placeholder="Guest Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border border-gray-300 rounded p-2 flex-1 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
+<div className="bg-gray-50 p-4 rounded-xl border flex flex-wrap gap-3 mb-6">
+      <input
+  type="text"
+  placeholder="Guest name"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  className="border border-gray-300 rounded-lg px-3 py-2 flex-1 focus:ring-2 focus:ring-blue-400 outline-none"
+/>
         <select
           value={side}
           onChange={(e) => setSide(e.target.value as "bride" | "groom")}
@@ -249,32 +255,46 @@ export default function Home() {
           <option value="bride">Bride</option>
           <option value="groom">Groom</option>
         </select>
-        <button
-          id="add-btn"
-          onClick={addGuest}
-          className="bg-purple-600 text-white rounded-lg px-4 py-2 hover:bg-purple-700 transition"
-        >
-          Add Guest
-        </button>
+   <button
+  onClick={addGuest}
+  className="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg shadow"
+>
+  Add Guest
+</button>
       </div>
-
+<div className="flex items-center gap-3 mb-6">
+  <label className="font-bold text-black">Filter by side:</label>
+ <select
+  value={sideFilter}
+  onChange={(e) =>
+    setSideFilter(e.target.value as "all" | "bride" | "groom")
+  }
+  className="border border-gray-300 rounded-lg px-3 py-2 bg-white shadow-sm"
+>
+    <option value="all">All</option>
+    <option value="bride">Bride</option>
+    <option value="groom">Groom</option>
+  </select>
+</div>
       {/* Guest Table */}
-      {guests.length === 0 ? (
-        <p className="text-center text-gray-600">No guests yet.</p>
+{filteredGuests.length === 0 ? (
+          <p className="text-center text-gray-600">No guests yet.</p>
       ) : (
-        <table className="w-full table-auto border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border px-2 py-1 text-left">Click Name to Edit</th>
-              <th className="border px-2 py-1 text-left">Side</th>
-              <th className="border px-2 py-1 text-left">Status</th>
-              <th className="border px-2 py-1 text-left">RSVP</th>
-              <th className="border px-2 py-1">&nbsp;</th>
-            </tr>
-          </thead>
+<table className="w-full border-collapse rounded-lg overflow-hidden">
+<thead className="bg-gray-50 text-gray-700 text-sm"><tr className="hover:bg-gray-50 transition">
+  <th className="border px-2 py-1">#</th>
+  <th className="border px-2 py-1 text-left">Click Name to Edit</th>
+  <th className="border px-2 py-1 text-left">Side</th>
+  <th className="border px-2 py-1 text-left">Status</th>
+  <th className="border px-2 py-1 text-left">RSVP</th>
+  <th className="border px-2 py-1">&nbsp;</th>
+</tr>
+</thead>
           <tbody>
-            {guests.map((g) => (
-              <tr key={g.id} className="hover:bg-gray-50">
+{filteredGuests.map((g, index) => (
+                <tr key={g.id} className="hover:bg-gray-50">
+<td className="border-b px-3 py-2">  {index + 1}
+</td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
@@ -336,27 +356,28 @@ export default function Home() {
         }
 
         /* Buttons */
-        .status-btn {
-          font-size: 0.75rem;
-          width: 100px;
-          border: none;
-          border-radius: 0.5rem;
-          padding: 0.25rem 0.5rem;
-          cursor: pointer;
-          color: inherit;
-        }
-        .not-invited {
-          background: #fecaca;
-          color: #7f1d1d;
-        }
-        .invited {
-          background: #16a34a;
-          color: #ffffff;
-        }
-        .attending {
-          background: #1e3a8a;
-          color: #ffffff;
-        }
+    .status-btn {
+  font-size: 0.75rem;
+  width: 100px;
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+       .not-invited {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.invited {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.attending {
+  background: #dbeafe;
+  color: #1e40af;
+}
         .remove-btn {
           color: #374151;
           background: none;
@@ -366,26 +387,29 @@ export default function Home() {
         }
 
         /* Stat cards */
-        .stat-card {
-          background: #f4f7f9; /* very light gray-blue */
-          padding: 15px;
-          border-radius: 10px;
-          text-align: center;
-          border: 1px solid #d1dfe6;
-        }
-        .stat-card span {
-          display: block;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #1f2937; /* dark gray for numbers */
-        }
-        .stats-grid label {
-          display: block;
-          font-size: 0.75rem;
-          color: #4b5563; /* muted gray */
-          font-weight: 600;
-          text-transform: uppercase;
-        }
+      .stat-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.stat-card span {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.stats-grid label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
 
         /* Table headers and cells */
         th {
@@ -414,7 +438,7 @@ export default function Home() {
 
         .controls input, .controls select { min-width: 150px; }
       `}</style>
+</div>
     </div>
   );
 }
-
